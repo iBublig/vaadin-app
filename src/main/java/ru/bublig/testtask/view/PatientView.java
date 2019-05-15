@@ -18,7 +18,7 @@ public class PatientView extends UI {
     private Grid<Patient> patientGrid = new Grid<>(Patient.class);
 
     private final TextField filterText = new TextField();
-    private final Button addNewBtn = new Button( "Add new doctor");
+    private final Button addNewBtn = new Button( "Add new patient");
     private final PatientEditor patientEditor = new PatientEditor(this);
 
     @Override
