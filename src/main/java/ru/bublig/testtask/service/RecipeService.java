@@ -5,7 +5,7 @@ import ru.bublig.testtask.DAO.CrudDAO;
 
 import java.util.List;
 
-public class RecipeCrudDAO extends CrudDAO<Recipe, Long> {
+public class RecipeService extends CrudDAO<Recipe, Long> {
     @Override
     public List<Recipe> getAll() {
         return null;

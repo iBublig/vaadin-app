@@ -8,11 +8,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientCrudDAO extends CrudDAO<Patient, Long> {
+public class PatientService extends CrudDAO<Patient, Long> {
 
     private final Connection connection;
 
-    public PatientCrudDAO(HSQLDBConnection connection) {
+    public PatientService(HSQLDBConnection connection) {
         this.connection = connection.getConnection();
     }
 

@@ -11,15 +11,8 @@ import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Doctor;
 import ru.bublig.testtask.service.DoctorService;
 
-/**
- * This view is the application entry point. A view may either represent a browser window
- * (or tab) or some part of an HTML page where a Vaadin application is embedded.
- * <p>
- * The view is initialized using {@link #init(VaadinRequest)}. This method is intended to be
- * overridden to add component to the user interface and initialize non-component functionality.
- */
 @Theme("mytheme")
-public class MainView extends UI {
+public class DoctorView extends UI {
 
     private final DoctorService doctorService = new DoctorService(HSQLDBConnection.getInstance());
     private Grid<Doctor> doctorGrid = new Grid<>(Doctor.class);

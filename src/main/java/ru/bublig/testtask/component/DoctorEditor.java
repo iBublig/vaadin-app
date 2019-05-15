@@ -7,7 +7,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Doctor;
 import ru.bublig.testtask.service.DoctorService;
-import ru.bublig.testtask.view.MainView;
+import ru.bublig.testtask.view.DoctorView;
 
 public class DoctorEditor extends FormLayout {
     private final DoctorService doctorService;
@@ -25,10 +25,10 @@ public class DoctorEditor extends FormLayout {
 
     private Binder<Doctor> binder = new Binder<>(Doctor.class);
 
-    private MainView mainView;
+    private DoctorView doctorView;
 
-    public DoctorEditor(MainView mainView) {
-        this.mainView = mainView;
+    public DoctorEditor(DoctorView doctorView) {
+        this.doctorView = doctorView;
         doctorService = new DoctorService(HSQLDBConnection.getInstance());
 
         setSizeUndefined();
@@ -55,13 +55,13 @@ public class DoctorEditor extends FormLayout {
 
     private void delete() {
         doctorService.delete(doctor.getId());
-        mainView.updateList();
+        doctorView.updateList();
         setVisible(false);
     }
 
     private void save() {
         doctorService.save(doctor);
-        mainView.updateList();
+        doctorView.updateList();
         setVisible(false);
     }
 }
