@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @SuppressWarnings("serial")
-public class Doctor implements Serializable, Cloneable {
+public class Doctor implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
@@ -88,11 +88,6 @@ public class Doctor implements Serializable, Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, patronymic, specialization);
-    }
-
-    @Override
-    public Doctor clone() throws CloneNotSupportedException {
-        return (Doctor) super.clone();
     }
 
     @Override

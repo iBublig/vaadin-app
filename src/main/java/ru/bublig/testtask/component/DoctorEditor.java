@@ -33,7 +33,7 @@ public class DoctorEditor extends FormLayout {
 
         setSizeUndefined();
         HorizontalLayout buttons = new HorizontalLayout(save, cancel, delete);
-        addComponents(firstName,lastName,patronymic,specialization,buttons);
+        addComponents(firstName, lastName, patronymic, specialization, buttons);
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);

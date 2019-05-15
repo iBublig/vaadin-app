@@ -67,6 +67,10 @@ public class Patient {
         this.phone = phone;
     }
 
+    public boolean isPersisted() {
+        return getId() != null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

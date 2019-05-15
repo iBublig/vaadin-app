@@ -6,7 +6,7 @@ import ru.bublig.testtask.view.DoctorView;
 
 import javax.servlet.annotation.WebServlet;
 
-@WebServlet(urlPatterns = "/doctor", name = "Doctor", asyncSupported = true)
+@WebServlet(urlPatterns = "/doctor/*", name = "Doctor", asyncSupported = true)
 @VaadinServletConfiguration(ui = DoctorView.class, productionMode = false)
 public class DoctorServlet extends VaadinServlet {
 }

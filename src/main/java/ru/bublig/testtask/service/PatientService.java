@@ -18,25 +18,9 @@ public class PatientService extends CrudDAO<Patient, Long> {
 
     @Override
     public List<Patient> getAll() {
-        List<Patient> patientList = new ArrayList<>();
         String sql = "SELECT t.ID, t.FIRSTNAME, t.LASTNAME, t.PATRONYMIC, t.PHONE " +
                 "FROM PUBLIC.PATIENT t";
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-            while (resultSet.next()) {
-                Patient patient = new Patient(
-                        resultSet.getLong("id"),
-                        resultSet.getString("firstName"),
-                        resultSet.getString("lastName"),
-                        resultSet.getString("patronymic"),
-                        resultSet.getString("phone")
-                );
-                patientList.add(patient);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return patientList;
+        return getAllHelper(sql);
     }
 
     @Override
@@ -49,7 +33,7 @@ public class PatientService extends CrudDAO<Patient, Long> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 patient.setId(resultSet.getLong("id"));
                 patient.setFirstName(resultSet.getString("firstName"));
                 patient.setLastName(resultSet.getString("lastName"));
@@ -65,7 +49,7 @@ public class PatientService extends CrudDAO<Patient, Long> {
     }
 
     @Override
-    public Patient update(Patient entity) {
+    protected Patient update(Patient entity) {
         String sql = "UPDATE PUBLIC.PATIENT t " +
                 "SET t.FIRSTNAME = ?, t.LASTNAME = ?, t.PATRONYMIC = ?, t.PHONE = ?" +
                 "WHERE t.ID = ?";
@@ -101,7 +85,7 @@ public class PatientService extends CrudDAO<Patient, Long> {
     }
 
     @Override
-    public boolean create(Patient entity) {
+    protected boolean create(Patient entity) {
         String sql = "INSERT INTO PUBLIC.PATIENT (FIRSTNAME, LASTNAME, PATRONYMIC, PHONE) " +
                 "VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -121,16 +105,45 @@ public class PatientService extends CrudDAO<Patient, Long> {
 
     @Override
     public boolean save(Patient entity) {
-        return false;
+        if (entity == null) {
+            System.out.println("Patient is null");
+            return false;
+        }
+        if (entity.getId() == null) {
+            create(entity);
+        } else {
+            update(entity);
+        }
+        return true;
     }
 
     @Override
     public List<Patient> getAll(String filter) {
-        return null;
+        String sql = "SELECT t.ID, t.FIRSTNAME, t.LASTNAME, t.PATRONYMIC, t.PHONE " +
+                "FROM PUBLIC.PATIENT t " +
+                "WHERE concat(t.FIRSTNAME, concat(t.LASTNAME, t.PATRONYMIC)) " +
+                "LIKE '%" + filter + "%'";
+        return getAllHelper(sql);
     }
 
     @Override
     protected List<Patient> getAllHelper(String sql) {
-        return null;
+        List<Patient> patientList = new ArrayList<>();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                Patient patient = new Patient(
+                        resultSet.getLong("id"),
+                        resultSet.getString("firstName"),
+                        resultSet.getString("lastName"),
+                        resultSet.getString("patronymic"),
+                        resultSet.getString("phone")
+                );
+                patientList.add(patient);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patientList;
     }
 }

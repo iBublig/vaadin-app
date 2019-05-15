@@ -35,7 +35,7 @@ public class HSQLDBConnection {
         return connection;
     }
 
-    private void initDb(){
+    private void initDb() {
         try {
             Class.forName(DB_DRIVER);
             connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);

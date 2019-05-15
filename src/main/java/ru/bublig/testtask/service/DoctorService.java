@@ -33,7 +33,7 @@ public class DoctorService extends CrudDAO<Doctor, Long> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 doctor.setId(resultSet.getLong("id"));
                 doctor.setFirstName(resultSet.getString("firstname"));
                 doctor.setLastName(resultSet.getString("lastname"));
@@ -85,7 +85,7 @@ public class DoctorService extends CrudDAO<Doctor, Long> {
     }
 
     @Override
-    protected boolean create(Doctor entity){
+    protected boolean create(Doctor entity) {
         String sql = "INSERT INTO PUBLIC.DOCTOR (FIRSTNAME, LASTNAME, PATRONYMIC, SPECIALIZATION) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, entity.getFirstName());
