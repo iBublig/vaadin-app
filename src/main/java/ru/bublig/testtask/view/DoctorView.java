@@ -45,7 +45,7 @@ public class DoctorView extends UI {
         HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn);
         HorizontalLayout main = new HorizontalLayout(doctorGrid, doctorEditor);
 
-        doctorGrid.setColumns("id", "firstName", "lastName", "patronymic", "specialization");
+        doctorGrid.setColumns("id", "lastName", "firstName", "patronymic", "specialization");
 
         main.setSizeFull();
         doctorGrid.setSizeFull();

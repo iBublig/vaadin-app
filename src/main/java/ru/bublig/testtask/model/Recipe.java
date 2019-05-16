@@ -3,6 +3,7 @@ package ru.bublig.testtask.model;
 import java.time.LocalDateTime;
 
 public class Recipe {
+    private Long id;
     private String description;
     private Long patientId;
     private Long doctorId;

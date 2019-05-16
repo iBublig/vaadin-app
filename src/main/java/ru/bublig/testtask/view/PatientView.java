@@ -8,7 +8,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import ru.bublig.testtask.component.PatientEditor;
 import ru.bublig.testtask.config.HSQLDBConnection;
-import ru.bublig.testtask.model.Doctor;
 import ru.bublig.testtask.model.Patient;
 import ru.bublig.testtask.service.PatientService;
 
@@ -45,7 +44,7 @@ public class PatientView extends UI {
         HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn);
         HorizontalLayout main = new HorizontalLayout(patientGrid, patientEditor);
 
-        patientGrid.setColumns("id", "firstName", "lastName", "patronymic", "phone");
+        patientGrid.setColumns("id", "lastName", "firstName", "patronymic", "phone");
 
         main.setSizeFull();
         patientGrid.setSizeFull();
