@@ -34,11 +34,11 @@ public class DoctorService extends CrudDAO<Doctor, Long> {
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                doctor.setId(resultSet.getLong("id"));
-                doctor.setFirstName(resultSet.getString("firstname").trim());
-                doctor.setLastName(resultSet.getString("lastname").trim());
-                doctor.setPatronymic(resultSet.getString("patronymic").trim());
-                doctor.setSpecialization(resultSet.getString("specialization").trim());
+                doctor.setId(resultSet.getLong("ID"));
+                doctor.setFirstName(resultSet.getString("FIRSTNAME").trim());
+                doctor.setLastName(resultSet.getString("LASTNAME").trim());
+                doctor.setPatronymic(resultSet.getString("PATRONYMIC").trim());
+                doctor.setSpecialization(resultSet.getString("SPECIALIZATION").trim());
             } else {
                 throw new IllegalArgumentException(Doctor.class.getSimpleName() + "Error: getEntityById");
             }
@@ -132,11 +132,11 @@ public class DoctorService extends CrudDAO<Doctor, Long> {
              ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 Doctor doctor = new Doctor(
-                        resultSet.getLong("id"),
-                        resultSet.getString("firstname").trim(),
-                        resultSet.getString("lastname").trim(),
-                        resultSet.getString("patronymic").trim(),
-                        resultSet.getString("specialization").trim()
+                        resultSet.getLong("ID"),
+                        resultSet.getString("FIRSTNAME").trim(),
+                        resultSet.getString("LASTNAME").trim(),
+                        resultSet.getString("PATRONYMIC").trim(),
+                        resultSet.getString("SPECIALIZATION").trim()
                 );
                 doctorList.add(doctor);
             }

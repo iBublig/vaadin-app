@@ -34,11 +34,11 @@ public class PatientService extends CrudDAO<Patient, Long> {
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                patient.setId(resultSet.getLong("id"));
-                patient.setFirstName(resultSet.getString("firstName").trim());
-                patient.setLastName(resultSet.getString("lastName").trim());
-                patient.setPatronymic(resultSet.getString("patronymic").trim());
-                patient.setPhone(resultSet.getString("phone").trim());
+                patient.setId(resultSet.getLong("ID"));
+                patient.setFirstName(resultSet.getString("FIRSTNAME").trim());
+                patient.setLastName(resultSet.getString("LASTNAME").trim());
+                patient.setPatronymic(resultSet.getString("PATRONYMIC").trim());
+                patient.setPhone(resultSet.getString("PHONE").trim());
             } else {
                 throw new IllegalArgumentException(Patient.class.getSimpleName() + "Error: getEntityById");
             }
@@ -133,11 +133,11 @@ public class PatientService extends CrudDAO<Patient, Long> {
              ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 Patient patient = new Patient(
-                        resultSet.getLong("id"),
-                        resultSet.getString("firstName").trim(),
-                        resultSet.getString("lastName").trim(),
-                        resultSet.getString("patronymic").trim(),
-                        resultSet.getString("phone").trim()
+                        resultSet.getLong("ID"),
+                        resultSet.getString("FIRSTNAME").trim(),
+                        resultSet.getString("LASTNAME").trim(),
+                        resultSet.getString("PATRONYMIC").trim(),
+                        resultSet.getString("PHONE").trim()
                 );
                 patientList.add(patient);
             }
