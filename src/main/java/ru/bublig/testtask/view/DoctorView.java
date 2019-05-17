@@ -14,6 +14,9 @@ import ru.bublig.testtask.service.DoctorService;
 @Theme("mytheme")
 public class DoctorView extends UI {
 
+    //TODO "Показать статистику" ?
+    //TODO Все формы ввода должны валидировать данные в соответствии с их типом и допустимыми значениями
+
     private final DoctorService doctorService = new DoctorService(HSQLDBConnection.getInstance());
     private Grid<Doctor> doctorGrid = new Grid<>(Doctor.class);
 
@@ -45,6 +48,7 @@ public class DoctorView extends UI {
         HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn);
         HorizontalLayout main = new HorizontalLayout(doctorGrid, doctorEditor);
 
+        // TODO Отображение статистической информации по количеству рецептов, выписанных врачами
         doctorGrid.setColumns("id", "lastName", "firstName", "patronymic", "specialization");
 
         main.setSizeFull();

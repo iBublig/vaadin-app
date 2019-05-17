@@ -26,6 +26,16 @@ public class Recipe {
         this.status = status;
     }
 
+    public Recipe(Long id, String description, Long patientId, Long doctorId, Date createData, Date validity, String status) {
+        this.id = id;
+        this.description = description;
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.createData = createData;
+        this.validity = validity;
+        this.status = RecipeStatus.getRecipeStatusByText(status);
+    }
+
     public Recipe(String description, Long patientId, Long doctorId, Date createData, Date validity, RecipeStatus status) {
         this.description = description;
         this.patientId = patientId;
@@ -89,6 +99,10 @@ public class Recipe {
 
     public void setStatus(String status) {
         this.status = RecipeStatus.getRecipeStatusByText(status);
+    }
+
+    public void setStatus(RecipeStatus status) {
+        this.status = status;
     }
 
     @Override
