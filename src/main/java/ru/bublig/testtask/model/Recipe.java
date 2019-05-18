@@ -6,8 +6,8 @@ import java.util.Objects;
 
 public class Recipe extends Entity  implements Serializable {
     private String description;
-    private Long patientId;
-    private Long doctorId;
+    private Patient patient;
+    private Doctor doctor;
     private Date createData;
     private Date validity;
     private RecipeStatus status;
@@ -15,30 +15,30 @@ public class Recipe extends Entity  implements Serializable {
     public Recipe() {
     }
 
-    public Recipe(Long id, String description, Long patientId, Long doctorId, Date createData, Date validity, RecipeStatus status) {
+    public Recipe(Long id, String description, Patient patient, Doctor doctor, Date createData, Date validity, RecipeStatus status) {
         this.id = id;
         this.description = description;
-        this.patientId = patientId;
-        this.doctorId = doctorId;
+        this.patient = patient;
+        this.doctor = doctor;
         this.createData = createData;
         this.validity = validity;
         this.status = status;
     }
 
-    public Recipe(Long id, String description, Long patientId, Long doctorId, Date createData, Date validity, String status) {
+    public Recipe(Long id, String description, Patient patient, Doctor doctor, Date createData, Date validity, String status) {
         this.id = id;
         this.description = description;
-        this.patientId = patientId;
-        this.doctorId = doctorId;
+        this.patient = patient;
+        this.doctor = doctor;
         this.createData = createData;
         this.validity = validity;
         this.status = RecipeStatus.getRecipeStatusByText(status);
     }
 
-    public Recipe(String description, Long patientId, Long doctorId, Date createData, Date validity, RecipeStatus status) {
+    public Recipe(String description, Patient patient, Doctor doctor, Date createData, Date validity, RecipeStatus status) {
         this.description = description;
-        this.patientId = patientId;
-        this.doctorId = doctorId;
+        this.patient = patient;
+        this.doctor = doctor;
         this.createData = createData;
         this.validity = validity;
         this.status = status;
@@ -52,20 +52,20 @@ public class Recipe extends Entity  implements Serializable {
         this.description = description;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public Long getDoctorId() {
-        return doctorId;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Date getCreateData() {
@@ -107,8 +107,8 @@ public class Recipe extends Entity  implements Serializable {
         Recipe recipe = (Recipe) o;
         return Objects.equals(id, recipe.id) &&
                 Objects.equals(description, recipe.description) &&
-                Objects.equals(patientId, recipe.patientId) &&
-                Objects.equals(doctorId, recipe.doctorId) &&
+                Objects.equals(patient, recipe.patient) &&
+                Objects.equals(doctor, recipe.doctor) &&
                 Objects.equals(createData, recipe.createData) &&
                 Objects.equals(validity, recipe.validity) &&
                 status == recipe.status;
@@ -116,7 +116,7 @@ public class Recipe extends Entity  implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, patientId, doctorId, createData, validity, status);
+        return Objects.hash(id, description, patient, doctor, createData, validity, status);
     }
 
     @Override
@@ -124,8 +124,8 @@ public class Recipe extends Entity  implements Serializable {
         return "Recipe{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
-                ", patientId=" + patientId +
-                ", doctorId=" + doctorId +
+                ", patient=" + patient +
+                ", doctor=" + doctor +
                 ", createData=" + createData +
                 ", validity=" + validity +
                 ", status=" + status +

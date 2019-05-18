@@ -2,8 +2,11 @@ package ru.bublig.testtask;
 
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Recipe;
+import ru.bublig.testtask.model.RecipeStatus;
+import ru.bublig.testtask.service.DoctorService;
 import ru.bublig.testtask.service.RecipeService;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TestApp {
@@ -25,10 +28,14 @@ public class TestApp {
 //        doctorService.save(doctor);
 
         RecipeService recipeService = new RecipeService(HSQLDBConnection.getInstance());
+        DoctorService doctorService = new DoctorService(HSQLDBConnection.getInstance());
 
-        Recipe recipe = new Recipe();
+        Recipe recipe = recipeService.getEntityById(1L);
 
+        recipe.setStatus(RecipeStatus.Normal);
+        recipe.setDoctor(doctorService.getEntityById(4L));
         recipeService.save(recipe);
+
 
         Date date = new Date();
         System.out.println(date);

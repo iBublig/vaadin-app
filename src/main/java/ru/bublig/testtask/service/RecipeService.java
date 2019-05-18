@@ -40,8 +40,8 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
             if (resultSet.next()) {
                 recipe.setId(resultSet.getLong("ID"));
                 recipe.setDescription(resultSet.getString("DESCRIPTION").trim());
-                recipe.setPatientId(resultSet.getLong("PATIENTID"));
-                recipe.setDoctorId(resultSet.getLong("DOCTORID"));
+                recipe.setPatient(patientService.getEntityById(resultSet.getLong("PATIENTID")));
+                recipe.setDoctor(doctorService.getEntityById(resultSet.getLong("DOCTORID")));
                 recipe.setCreateData(resultSet.getDate("CREATEDATE"));
                 recipe.setValidity(resultSet.getDate("VALIDITY"));
                 recipe.setStatus(resultSet.getString("STATUS").trim());
@@ -56,20 +56,56 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
 
     @Override
     public void update(Recipe entity) {
+        String sql = "UPDATE PUBLIC.RECIPE t " +
+                "SET t.DESCRIPTION = ?, t.PATIENTID = ?, t.DOCTORID = ?, t.CREATEDATE = ?, t.VALIDITY = ?, t.STATUS = ?" +
+                "WHERE t.ID = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            setPreparedStatement(entity, preparedStatement);
+            preparedStatement.setLong(7, entity.getId());
+            if (preparedStatement.executeUpdate() != 1) {
+                throw new IllegalArgumentException(Recipe.class.getSimpleName() + "Error: update");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        String sql = "DELETE FROM PUBLIC.RECIPE t " +
+                "WHERE t.id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+            if (preparedStatement.executeUpdate() != 1) {
+                throw new IllegalArgumentException(Recipe.class.getSimpleName() + "Error: delete");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void create(Recipe entity) {
+        String sql = "INSERT INTO PUBLIC.RECIPE (DESCRIPTION, PATIENTID, DOCTORID, CREATEDATE, VALIDITY, STATUS) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            setPreparedStatement(entity, preparedStatement);
+            if (preparedStatement.executeUpdate() != 1) {
+                throw new IllegalArgumentException(Recipe.class.getSimpleName() + "Error: create");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<Recipe> getAll(String filter) {
-        return null;
+        String sql = "SELECT t.ID, t.DESCRIPTION, t.PATIENTID, t.DOCTORID, t.CREATEDATE, t.VALIDITY, t.STATUS " +
+                "FROM PUBLIC.RECIPE t " +
+                "WHERE t.DESCRIPTION " +
+                "LIKE '%" + filter + "%'";
+        return getAllHelper(sql);
     }
 
     @Override
@@ -81,8 +117,8 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
                 Recipe recipe = new Recipe(
                         resultSet.getLong("ID"),
                         resultSet.getString("DESCRIPTION").trim(),
-                        resultSet.getLong("PATIENTID"),
-                        resultSet.getLong("DOCTORID"),
+                        patientService.getEntityById(resultSet.getLong("PATIENTID")),
+                        doctorService.getEntityById(resultSet.getLong("DOCTORID")),
                         resultSet.getDate("CREATEDATE"),
                         resultSet.getDate("VALIDITY"),
                         resultSet.getString("STATUS").trim()
@@ -101,5 +137,14 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
                 "WHERE concat(t.DESCRIPTION, concat(t.PATIENTID, t.STATUS)) " +
                 "LIKE '%" + textFilterValue + "%" + patientFilterValue + "%" + statusFilterValue + "%'";
         return getAllHelper(sql);
+    }
+
+    private void setPreparedStatement(Recipe entity, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, entity.getDescription());
+        preparedStatement.setLong(2, entity.getPatient().getId());
+        preparedStatement.setLong(3, entity.getDoctor().getId());
+        preparedStatement.setDate(4, new Date(entity.getCreateData().getTime()));
+        preparedStatement.setDate(5, new Date(entity.getValidity().getTime()));
+        preparedStatement.setString(6, entity.getStatus().toString());
     }
 }

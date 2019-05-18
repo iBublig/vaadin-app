@@ -54,10 +54,7 @@ public class PatientService extends CrudDAO<Patient, Long> {
                 "SET t.FIRSTNAME = ?, t.LASTNAME = ?, t.PATRONYMIC = ?, t.PHONE = ?" +
                 "WHERE t.ID = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, entity.getFirstName());
-            preparedStatement.setString(2, entity.getLastName());
-            preparedStatement.setString(3, entity.getPatronymic());
-            preparedStatement.setString(4, entity.getPhone());
+            setPreparedStatement(entity, preparedStatement);
             preparedStatement.setLong(5, entity.getId());
             if (preparedStatement.executeUpdate() != 1) {
                 throw new IllegalArgumentException(Patient.class.getSimpleName() + "Error: update");
@@ -88,10 +85,7 @@ public class PatientService extends CrudDAO<Patient, Long> {
         String sql = "INSERT INTO PUBLIC.PATIENT (FIRSTNAME, LASTNAME, PATRONYMIC, PHONE) " +
                 "VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, entity.getFirstName());
-            preparedStatement.setString(2, entity.getLastName());
-            preparedStatement.setString(3, entity.getPatronymic());
-            preparedStatement.setString(4, entity.getPhone());
+            setPreparedStatement(entity, preparedStatement);
             if (preparedStatement.executeUpdate() != 1) {
                 throw new IllegalArgumentException(Patient.class.getSimpleName() + "Error: create");
             }
@@ -128,5 +122,12 @@ public class PatientService extends CrudDAO<Patient, Long> {
             e.printStackTrace();
         }
         return patientList;
+    }
+
+    private void setPreparedStatement(Patient entity, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, entity.getFirstName());
+        preparedStatement.setString(2, entity.getLastName());
+        preparedStatement.setString(3, entity.getPatronymic());
+        preparedStatement.setString(4, entity.getPhone());
     }
 }

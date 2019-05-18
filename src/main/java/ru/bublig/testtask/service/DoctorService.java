@@ -54,10 +54,7 @@ public class DoctorService extends CrudDAO<Doctor, Long> {
                 "SET t.FIRSTNAME = ?, t.LASTNAME = ?, t.PATRONYMIC = ?, t.SPECIALIZATION = ?" +
                 "WHERE t.ID = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, entity.getFirstName());
-            preparedStatement.setString(2, entity.getLastName());
-            preparedStatement.setString(3, entity.getPatronymic());
-            preparedStatement.setString(4, entity.getSpecialization());
+            setPreparedStatement(entity, preparedStatement);
             preparedStatement.setLong(5, entity.getId());
             if (preparedStatement.executeUpdate() != 1) {
                 throw new IllegalArgumentException(Doctor.class.getSimpleName() + "Error: update");
@@ -87,10 +84,7 @@ public class DoctorService extends CrudDAO<Doctor, Long> {
     protected void create(Doctor entity) {
         String sql = "INSERT INTO PUBLIC.DOCTOR (FIRSTNAME, LASTNAME, PATRONYMIC, SPECIALIZATION) VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, entity.getFirstName());
-            preparedStatement.setString(2, entity.getLastName());
-            preparedStatement.setString(3, entity.getPatronymic());
-            preparedStatement.setString(4, entity.getSpecialization());
+            setPreparedStatement(entity, preparedStatement);
             if (preparedStatement.executeUpdate() != 1) {
                 throw new IllegalArgumentException(Doctor.class.getSimpleName() + "Error: create");
             }
@@ -129,4 +123,10 @@ public class DoctorService extends CrudDAO<Doctor, Long> {
         return doctorList;
     }
 
+    private void setPreparedStatement(Doctor entity, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, entity.getFirstName());
+        preparedStatement.setString(2, entity.getLastName());
+        preparedStatement.setString(3, entity.getPatronymic());
+        preparedStatement.setString(4, entity.getSpecialization());
+    }
 }
