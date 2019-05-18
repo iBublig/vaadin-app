@@ -2,10 +2,7 @@ package ru.bublig.testtask.component;
 
 import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Patient;
@@ -22,6 +19,8 @@ public class PatientEditor extends FormLayout {
     private TextField patronymic = new TextField("Patronymic");
     private TextField phone = new TextField("Phone");
 
+    private Label error = new Label("Нельзя удалить, есть зависимость с рецептом");
+
     private Button save = new Button("Save");
     private Button cancel = new Button("Cancel");
     private Button delete = new Button("Delete");
@@ -34,9 +33,11 @@ public class PatientEditor extends FormLayout {
         this.patientView = patientView;
         patientService = new PatientService(HSQLDBConnection.getInstance());
 
+        error.setVisible(false);
+
         setSizeUndefined();
         HorizontalLayout buttons = new HorizontalLayout(save, cancel, delete);
-        addComponents(firstName, lastName, patronymic, phone, buttons);
+        addComponents(firstName, lastName, patronymic, phone, buttons, error);
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -45,6 +46,7 @@ public class PatientEditor extends FormLayout {
 
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
+        cancel.addClickListener(e -> setVisible(false));
     }
 
     public void setPatient(Patient patient) {
@@ -57,7 +59,11 @@ public class PatientEditor extends FormLayout {
     }
 
     private void delete() {
-        patientService.delete(patient.getId());
+        if (!patientService.delete(patient.getId())){
+            error.setVisible(true);
+            return;
+        }
+        error.setVisible(false);
         patientView.updateList();
         setVisible(false);
     }

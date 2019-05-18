@@ -8,6 +8,7 @@ import ru.bublig.testtask.service.RecipeService;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public class TestApp {
 
@@ -32,9 +33,10 @@ public class TestApp {
 
         Recipe recipe = recipeService.getEntityById(1L);
 
-        recipe.setStatus(RecipeStatus.Normal);
-        recipe.setDoctor(doctorService.getEntityById(4L));
-        recipeService.save(recipe);
+        List<Recipe> all = recipeService.getAll();
+        for (Recipe doctor: all) {
+            System.out.println(doctor);
+        }
 
 
         Date date = new Date();

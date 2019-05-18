@@ -83,12 +83,6 @@ public class Doctor extends Entity implements Serializable {
 
     @Override
     public String toString() {
-        return "Doctor{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", specialization='" + specialization + '\'' +
-                '}';
+        return lastName + " " + firstName + " " + patronymic;
     }
 }

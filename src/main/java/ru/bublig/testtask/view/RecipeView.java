@@ -25,7 +25,7 @@ public class RecipeView extends UI {
 
     private final TextField filterText = new TextField();
     private final TextField patientFilter = new TextField();
-    private final NativeSelect<RecipeStatus> statusFilter = new NativeSelect<>("Status");
+    private final NativeSelect<RecipeStatus> statusFilter = new NativeSelect<>();
     private final Button acceptFilter = new Button( "Filter");
     private final Button addNewBtn = new Button( "Add new recipe");
     private final RecipeEditor recipeEditor = new RecipeEditor( this);
@@ -47,6 +47,7 @@ public class RecipeView extends UI {
         patientFilter.setPlaceholder("patient");
         statusFilter.setItems(RecipeStatus.values());
         statusFilter.setSelectedItem(RecipeStatus.Normal);
+        statusFilter.setEmptySelectionAllowed(false);
 
         CssLayout filtering = new CssLayout();
         filtering.addComponents(filterText, patientFilter, statusFilter, acceptFilter, clearFilterTextBtn);
@@ -62,7 +63,7 @@ public class RecipeView extends UI {
         HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn);
         HorizontalLayout main = new HorizontalLayout(recipeGrid, recipeEditor);
 
-        recipeGrid.setColumns("id", "description", "patientId", "doctorId", "createData", "validity", "status");
+        recipeGrid.setColumns("id", "description", "patient", "doctor", "createData", "validity", "status");
 
         main.setSizeFull();
         recipeGrid.setSizeFull();
@@ -87,6 +88,7 @@ public class RecipeView extends UI {
 
     public void updateList() {
         recipeGrid.setItems(recipeService.getAll());
+
     }
 
     public void updateListFilter() {

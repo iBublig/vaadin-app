@@ -19,6 +19,8 @@ public class DoctorEditor extends FormLayout {
     private TextField patronymic = new TextField("Patronymic");
     private TextField specialization = new TextField("Specialization");
 
+    private Label error = new Label("Нельзя удалить, есть зависимость с рецептом");
+
     private Button save = new Button("Save");
     private Button cancel = new Button("Cancel");
     private Button delete = new Button("Delete");
@@ -31,9 +33,11 @@ public class DoctorEditor extends FormLayout {
         this.doctorView = doctorView;
         doctorService = new DoctorService(HSQLDBConnection.getInstance());
 
+        error.setVisible(false);
+
         setSizeUndefined();
         HorizontalLayout buttons = new HorizontalLayout(save, cancel, delete);
-        addComponents(firstName, lastName, patronymic, specialization, buttons);
+        addComponents(firstName, lastName, patronymic, specialization, buttons, error);
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -42,6 +46,7 @@ public class DoctorEditor extends FormLayout {
 
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
+        cancel.addClickListener(e -> setVisible(false));
     }
 
     public void setDoctor(Doctor doctor) {
@@ -54,7 +59,10 @@ public class DoctorEditor extends FormLayout {
     }
 
     private void delete() {
-        doctorService.delete(doctor.getId());
+        if (!doctorService.delete(doctor.getId())){
+            error.setVisible(true);
+            return;
+        }
         doctorView.updateList();
         setVisible(false);
     }

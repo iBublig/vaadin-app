@@ -74,7 +74,6 @@ public class PatientService extends CrudDAO<Patient, Long> {
                 throw new IllegalArgumentException(Patient.class.getSimpleName() + "Error: delete");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
         return true;

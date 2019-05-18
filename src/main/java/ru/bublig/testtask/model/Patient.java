@@ -82,12 +82,6 @@ public class Patient extends Entity  implements Serializable {
 
     @Override
     public String toString() {
-        return "Patient{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+        return lastName + " " + firstName + " " + patronymic;
     }
 }
