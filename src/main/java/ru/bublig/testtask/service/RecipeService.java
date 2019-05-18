@@ -67,7 +67,16 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
 
     @Override
     public boolean save(Recipe entity) {
-        return false;
+        if (entity == null) {
+            System.out.println("Recipe is null");
+            return false;
+        }
+        if (entity.getId() == null) {
+            create(entity);
+        } else {
+            update(entity);
+        }
+        return true;
     }
 
     @Override

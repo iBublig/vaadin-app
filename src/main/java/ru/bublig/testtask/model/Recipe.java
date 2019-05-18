@@ -1,6 +1,5 @@
 package ru.bublig.testtask.model;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -103,6 +102,10 @@ public class Recipe {
 
     public void setStatus(RecipeStatus status) {
         this.status = status;
+    }
+
+    public boolean isPersisted() {
+        return getId() != null;
     }
 
     @Override

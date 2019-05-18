@@ -3,7 +3,6 @@ package ru.bublig.testtask.view;
 import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import ru.bublig.testtask.component.RecipeEditor;
@@ -14,11 +13,7 @@ import ru.bublig.testtask.service.RecipeService;
 
 @Theme("mytheme")
 public class RecipeView extends UI {
-
-    //TODO Отображения списка рецептов
-    //TODO Фильтрация списка рецептов по описанию, приоритету и пациенту
     //TODO Добавление нового рецепта, редактирование и удаление существующего
-
     //TODO Все формы ввода должны валидировать данные в соответствии с их типом и допустимыми значениями
 
     // Список рецептов с фильтром: таблица, кнопки "Добавить", "Изменить", "Удалить", панель фильтра с полями "Пациент",
@@ -30,18 +25,15 @@ public class RecipeView extends UI {
 
     private final TextField filterText = new TextField();
     private final TextField patientFilter = new TextField();
-//    private final TextField statusFilter = new TextField();
     private final NativeSelect<RecipeStatus> statusFilter = new NativeSelect<>("Status");
     private final Button acceptFilter = new Button( "Filter");
     private final Button addNewBtn = new Button( "Add new recipe");
-    private final RecipeEditor recipeEditor = new RecipeEditor(this);
+    private final RecipeEditor recipeEditor = new RecipeEditor( this);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
 
-//        filterText.addValueChangeListener(clickEvent -> updateList());
-//        filterText.setValueChangeMode(ValueChangeMode.LAZY);
         Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
         clearFilterTextBtn.setDescription("Clear the current input");
         clearFilterTextBtn.addClickListener(clickEvent -> {
@@ -55,9 +47,6 @@ public class RecipeView extends UI {
         patientFilter.setPlaceholder("patient");
         statusFilter.setItems(RecipeStatus.values());
         statusFilter.setSelectedItem(RecipeStatus.Normal);
-
-//        statusFilter.setSelectedItem(RecipeStatus.Normal);
-//        statusFilter.setPlaceholder("status");
 
         CssLayout filtering = new CssLayout();
         filtering.addComponents(filterText, patientFilter, statusFilter, acceptFilter, clearFilterTextBtn);
@@ -99,6 +88,7 @@ public class RecipeView extends UI {
     public void updateList() {
         recipeGrid.setItems(recipeService.getAll());
     }
+
     public void updateListFilter() {
         recipeGrid.setItems(recipeService.getAll(filterText.getValue(), patientFilter.getValue(), statusFilter.getValue().name()));
     }
