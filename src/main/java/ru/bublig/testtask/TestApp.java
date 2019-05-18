@@ -26,7 +26,9 @@ public class TestApp {
 
         RecipeService recipeService = new RecipeService(HSQLDBConnection.getInstance());
 
-        Recipe recipe = recipeService.getEntityById(1L);
+        Recipe recipe = new Recipe();
+
+        recipeService.save(recipe);
 
         Date date = new Date();
         System.out.println(date);

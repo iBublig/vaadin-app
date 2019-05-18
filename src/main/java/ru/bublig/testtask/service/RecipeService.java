@@ -11,9 +11,13 @@ import java.util.List;
 public class RecipeService extends CrudDAO<Recipe, Long> {
 
     private final Connection connection;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
 
     public RecipeService(HSQLDBConnection connection) {
         this.connection = connection.getConnection();
+        doctorService = new DoctorService(HSQLDBConnection.getInstance());
+        patientService = new PatientService(HSQLDBConnection.getInstance());
     }
 
     @Override
@@ -51,8 +55,7 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
     }
 
     @Override
-    public Recipe update(Recipe entity) {
-        return null;
+    public void update(Recipe entity) {
     }
 
     @Override
@@ -61,22 +64,7 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
     }
 
     @Override
-    public boolean create(Recipe entity) {
-        return false;
-    }
-
-    @Override
-    public boolean save(Recipe entity) {
-        if (entity == null) {
-            System.out.println("Recipe is null");
-            return false;
-        }
-        if (entity.getId() == null) {
-            create(entity);
-        } else {
-            update(entity);
-        }
-        return true;
+    public void create(Recipe entity) {
     }
 
     @Override

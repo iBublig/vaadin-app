@@ -1,10 +1,10 @@
 package ru.bublig.testtask.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Recipe {
-    private Long id;
+public class Recipe extends Entity  implements Serializable {
     private String description;
     private Long patientId;
     private Long doctorId;
@@ -42,14 +42,6 @@ public class Recipe {
         this.createData = createData;
         this.validity = validity;
         this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getDescription() {

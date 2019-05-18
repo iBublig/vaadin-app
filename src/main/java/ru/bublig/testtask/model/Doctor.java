@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @SuppressWarnings("serial")
-public class Doctor implements Serializable {
-    private Long id;
+public class Doctor extends Entity implements Serializable {
     private String firstName;
     private String lastName;
     private String patronymic;
@@ -27,14 +26,6 @@ public class Doctor implements Serializable {
         this.lastName = lastName;
         this.patronymic = patronymic;
         this.specialization = specialization;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {

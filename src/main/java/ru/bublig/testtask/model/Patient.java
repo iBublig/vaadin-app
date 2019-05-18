@@ -1,9 +1,9 @@
 package ru.bublig.testtask.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Patient {
-    private Long id;
+public class Patient extends Entity  implements Serializable {
     private String firstName;
     private String lastName;
     private String patronymic;
@@ -25,14 +25,6 @@ public class Patient {
         this.lastName = lastName;
         this.patronymic = patronymic;
         this.phone = phone;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {

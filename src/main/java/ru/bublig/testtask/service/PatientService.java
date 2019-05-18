@@ -49,7 +49,7 @@ public class PatientService extends CrudDAO<Patient, Long> {
     }
 
     @Override
-    protected Patient update(Patient entity) {
+    protected void update(Patient entity) {
         String sql = "UPDATE PUBLIC.PATIENT t " +
                 "SET t.FIRSTNAME = ?, t.LASTNAME = ?, t.PATRONYMIC = ?, t.PHONE = ?" +
                 "WHERE t.ID = ?";
@@ -65,7 +65,6 @@ public class PatientService extends CrudDAO<Patient, Long> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return entity;
     }
 
     @Override
@@ -85,7 +84,7 @@ public class PatientService extends CrudDAO<Patient, Long> {
     }
 
     @Override
-    protected boolean create(Patient entity) {
+    protected void create(Patient entity) {
         String sql = "INSERT INTO PUBLIC.PATIENT (FIRSTNAME, LASTNAME, PATRONYMIC, PHONE) " +
                 "VALUES (?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -98,23 +97,7 @@ public class PatientService extends CrudDAO<Patient, Long> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
-    }
-
-    @Override
-    public boolean save(Patient entity) {
-        if (entity == null) {
-            System.out.println("Patient is null");
-            return false;
-        }
-        if (entity.getId() == null) {
-            create(entity);
-        } else {
-            update(entity);
-        }
-        return true;
     }
 
     @Override
