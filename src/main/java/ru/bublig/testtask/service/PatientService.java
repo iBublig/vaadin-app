@@ -1,8 +1,8 @@
 package ru.bublig.testtask.service;
 
+import ru.bublig.testtask.DAO.CrudDAO;
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Patient;
-import ru.bublig.testtask.DAO.CrudDAO;
 
 import java.sql.*;
 import java.util.ArrayList;

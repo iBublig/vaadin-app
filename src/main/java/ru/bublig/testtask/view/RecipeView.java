@@ -25,9 +25,9 @@ public class RecipeView extends UI {
     private final TextField filterText = new TextField();
     private final TextField patientFilter = new TextField();
     private final NativeSelect<RecipeStatus> statusFilter = new NativeSelect<>();
-    private final Button acceptFilter = new Button( "Filter");
-    private final Button addNewBtn = new Button( "Add new recipe");
-    private final RecipeEditor recipeEditor = new RecipeEditor( this);
+    private final Button acceptFilter = new Button("Filter");
+    private final Button addNewBtn = new Button("Add new recipe");
+    private final RecipeEditor recipeEditor = new RecipeEditor(this);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {

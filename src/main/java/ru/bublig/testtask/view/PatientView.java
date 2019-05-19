@@ -6,7 +6,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import ru.bublig.testtask.component.PatientEditor;
+import ru.bublig.testtask.component.PatientWindowEditor;
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Patient;
 import ru.bublig.testtask.service.PatientService;
@@ -20,8 +20,8 @@ public class PatientView extends UI {
     private Grid<Patient> patientGrid = new Grid<>(Patient.class);
 
     private final TextField filterText = new TextField();
-    private final Button addNewBtn = new Button( "Add new patient");
-    private final PatientEditor patientEditor = new PatientEditor(this);
+    private final Button addNewBtn = new Button("Add new patient");
+    private final PatientWindowEditor patientEditor = new PatientWindowEditor(this);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -42,10 +42,11 @@ public class PatientView extends UI {
         addNewBtn.addClickListener(clickEvent -> {
             patientGrid.asSingleSelect().clear();
             patientEditor.setPatient(new Patient());
+            UI.getCurrent().addWindow(patientEditor);
         });
 
         HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn);
-        HorizontalLayout main = new HorizontalLayout(patientGrid, patientEditor);
+        HorizontalLayout main = new HorizontalLayout(patientGrid);
 
         patientGrid.setColumns("id", "lastName", "firstName", "patronymic", "phone");
 
@@ -60,17 +61,20 @@ public class PatientView extends UI {
 
         setContent(layout);
 
-        patientEditor.setVisible(false);
-
         patientGrid.asSingleSelect().addValueChangeListener(valueChangeEvent -> {
-            if (valueChangeEvent.getValue() == null) {
-                patientEditor.setVisible(false);
-            } else
+            if (!(valueChangeEvent.getValue() == null)) {
                 patientEditor.setPatient(valueChangeEvent.getValue());
+                UI.getCurrent().addWindow(patientEditor);
+            }
         });
     }
 
     public void updateList() {
+        deselectAll();
         patientGrid.setItems(patientService.getAll(filterText.getValue()));
+    }
+
+    public void deselectAll() {
+        patientGrid.deselectAll();
     }
 }

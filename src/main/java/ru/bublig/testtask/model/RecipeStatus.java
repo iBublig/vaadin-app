@@ -12,7 +12,7 @@ public enum RecipeStatus {
     }
 
     public static RecipeStatus getRecipeStatusByText(String text) {
-        for (RecipeStatus recipeStatus: RecipeStatus.values()){
+        for (RecipeStatus recipeStatus : RecipeStatus.values()) {
             if (recipeStatus.text.equals(text))
                 return recipeStatus;
         }

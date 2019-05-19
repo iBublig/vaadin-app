@@ -3,7 +3,7 @@ package ru.bublig.testtask.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Patient extends Entity  implements Serializable {
+public class Patient extends Entity implements Serializable {
     private String firstName;
     private String lastName;
     private String patronymic;

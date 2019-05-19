@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Recipe extends Entity  implements Serializable {
+public class Recipe extends Entity implements Serializable {
     private String description;
     private Patient patient;
     private Doctor doctor;

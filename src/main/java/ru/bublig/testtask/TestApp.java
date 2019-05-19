@@ -2,11 +2,9 @@ package ru.bublig.testtask;
 
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Recipe;
-import ru.bublig.testtask.model.RecipeStatus;
 import ru.bublig.testtask.service.DoctorService;
 import ru.bublig.testtask.service.RecipeService;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class TestApp {
         Recipe recipe = recipeService.getEntityById(1L);
 
         List<Recipe> all = recipeService.getAll();
-        for (Recipe doctor: all) {
+        for (Recipe doctor : all) {
             System.out.println(doctor);
         }
 

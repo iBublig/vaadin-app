@@ -6,7 +6,8 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import ru.bublig.testtask.component.DoctorEditor;
+import ru.bublig.testtask.component.DoctorWindowEditor;
+import ru.bublig.testtask.component.StatisticsWindow;
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Doctor;
 import ru.bublig.testtask.service.DoctorService;
@@ -14,15 +15,14 @@ import ru.bublig.testtask.service.DoctorService;
 @Theme("mytheme")
 public class DoctorView extends UI {
 
-    //TODO "Показать статистику" ?
-    //TODO Все формы ввода должны валидировать данные в соответствии с их типом и допустимыми значениями
-
     private final DoctorService doctorService = new DoctorService(HSQLDBConnection.getInstance());
     private Grid<Doctor> doctorGrid = new Grid<>(Doctor.class);
 
     private final TextField filterText = new TextField();
     private final Button addNewBtn = new Button("Add new doctor");
-    private final DoctorEditor doctorEditor = new DoctorEditor(this);
+    private final Button statisticsButton = new Button("Statistics");
+    private final DoctorWindowEditor doctorWindowEditor = new DoctorWindowEditor(this);
+    private final StatisticsWindow statisticsWindow = new StatisticsWindow();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -42,13 +42,17 @@ public class DoctorView extends UI {
 
         addNewBtn.addClickListener(clickEvent -> {
             doctorGrid.asSingleSelect().clear();
-            doctorEditor.setDoctor(new Doctor());
+            doctorWindowEditor.setDoctor(new Doctor());
+            UI.getCurrent().addWindow(doctorWindowEditor);
         });
 
-        HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn);
-        HorizontalLayout main = new HorizontalLayout(doctorGrid, doctorEditor);
+        statisticsButton.addClickListener(clickEvent -> {
+            UI.getCurrent().addWindow(statisticsWindow);
+        });
 
-        // TODO Отображение статистической информации по количеству рецептов, выписанных врачами
+        HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn, statisticsButton);
+        HorizontalLayout main = new HorizontalLayout(doctorGrid);
+
         doctorGrid.setColumns("id", "lastName", "firstName", "patronymic", "specialization");
 
         main.setSizeFull();
@@ -62,17 +66,20 @@ public class DoctorView extends UI {
 
         setContent(layout);
 
-        doctorEditor.setVisible(false);
-
         doctorGrid.asSingleSelect().addValueChangeListener(valueChangeEvent -> {
-            if (valueChangeEvent.getValue() == null) {
-                doctorEditor.setVisible(false);
-            } else
-                doctorEditor.setDoctor(valueChangeEvent.getValue());
+            if (!(valueChangeEvent.getValue() == null)) {
+                doctorWindowEditor.setDoctor(valueChangeEvent.getValue());
+                UI.getCurrent().addWindow(doctorWindowEditor);
+            }
         });
     }
 
     public void updateList() {
+        deselectAll();
         doctorGrid.setItems(doctorService.getAll(filterText.getValue()));
+    }
+
+    public void deselectAll() {
+        doctorGrid.deselectAll();
     }
 }
