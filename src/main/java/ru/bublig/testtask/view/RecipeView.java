@@ -7,18 +7,17 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import ru.bublig.testtask.component.RecipeEditor;
 import ru.bublig.testtask.config.HSQLDBConnection;
+import ru.bublig.testtask.model.Doctor;
+import ru.bublig.testtask.model.Patient;
 import ru.bublig.testtask.model.Recipe;
 import ru.bublig.testtask.model.RecipeStatus;
 import ru.bublig.testtask.service.RecipeService;
 
+import java.util.Date;
+
 @Theme("mytheme")
 public class RecipeView extends UI {
-    //TODO Добавление нового рецепта, редактирование и удаление существующего
     //TODO Все формы ввода должны валидировать данные в соответствии с их типом и допустимыми значениями
-
-    // Список рецептов с фильтром: таблица, кнопки "Добавить", "Изменить", "Удалить", панель фильтра с полями "Пациент",
-    // "Приоритет", "Описание" и кнопкой "Применить"
-    // Фильтр по описанию предполагает вывод рецептов, содержащих в описании введённый в фильтр текст
 
     private final RecipeService recipeService = new RecipeService(HSQLDBConnection.getInstance());
     private Grid<Recipe> recipeGrid = new Grid<>(Recipe.class);
@@ -57,7 +56,7 @@ public class RecipeView extends UI {
 
         addNewBtn.addClickListener(clickEvent -> {
             recipeGrid.asSingleSelect().clear();
-            recipeEditor.setRecipe(new Recipe());
+            recipeEditor.setRecipe(new Recipe("", new Patient(), new Doctor(), new Date(), new Date(), RecipeStatus.Normal));
         });
 
         HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn);

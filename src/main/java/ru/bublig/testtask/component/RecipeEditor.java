@@ -81,13 +81,21 @@ public class RecipeEditor extends FormLayout {
                 .bind(Recipe::getValidity, Recipe::setValidity);
 
         binder.bind(patient,
-                (ValueProvider<Recipe, String>) recipe ->
-                        recipe.getPatient().toString(),
+                (ValueProvider<Recipe, String>) recipe -> {
+                    if (!recipe.getPatient().isPersisted())
+                        return "";
+                    else
+                        return recipe.getPatient().toString();
+                },
                 (Setter<Recipe, String>) (recipe, s) -> patient.setValue(s));
 
         binder.bind(doctor,
-                (ValueProvider<Recipe, String>) recipe ->
-                        recipe.getDoctor().toString(),
+                (ValueProvider<Recipe, String>) recipe -> {
+                    if (!recipe.getDoctor().isPersisted())
+                        return "";
+                    else
+                        return recipe.getDoctor().toString();
+                },
                 (Setter<Recipe, String>) (recipe, s) -> doctor.setValue(s));
 
         binder.bindInstanceFields(this);
@@ -122,6 +130,7 @@ public class RecipeEditor extends FormLayout {
     }
 
     public void setRecipe(Recipe recipe) {
+        updateField();
         this.recipe = recipe;
         binder.setBean(recipe);
 
@@ -133,7 +142,7 @@ public class RecipeEditor extends FormLayout {
     }
 
     private void delete() {
-        if (recipeService.delete(recipe.getId())) {
+        if (!recipeService.delete(recipe.getId())) {
             addComponent(new Label("Ошибка при удалении"));
         }
         //TODO удаление с фильтром
@@ -146,5 +155,16 @@ public class RecipeEditor extends FormLayout {
         //TODO обновление с фильтром
         recipeView.updateList();
         setVisible(false);
+    }
+
+    private void updateField() {
+        doctorNativeSelect.setVisible(false);
+        doctorNativeSelect.clear();
+        patientNativeSelect.setVisible(false);
+        patientNativeSelect.clear();
+        description.clear();
+        createData.clear();
+        validity.clear();
+        recipeStatus.clear();
     }
 }
