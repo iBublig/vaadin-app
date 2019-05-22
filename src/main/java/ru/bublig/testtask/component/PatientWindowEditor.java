@@ -89,10 +89,7 @@ public class PatientWindowEditor extends Window {
             }
         });
         delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> {
-            patientView.deselectAll();
-            close();
-        });
+        cancel.addClickListener(e -> close());
         setContent(window);
     }
 
@@ -111,7 +108,6 @@ public class PatientWindowEditor extends Window {
             error.setVisible(true);
             return;
         }
-        patientView.updateList();
         close();
     }
 
@@ -122,7 +118,6 @@ public class PatientWindowEditor extends Window {
 
     private void save() {
         patientService.save(patient);
-        patientView.updateList();
         close();
     }
 
@@ -132,6 +127,13 @@ public class PatientWindowEditor extends Window {
         window.setComponentAlignment(patronymic, Alignment.BOTTOM_CENTER);
         window.setComponentAlignment(phone, Alignment.BOTTOM_CENTER);
         window.setComponentAlignment(buttons, Alignment.BOTTOM_CENTER);
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        patientView.updateList();
+        patientView.deselectAll();
     }
 
     private void setValidation() {

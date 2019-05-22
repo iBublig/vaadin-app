@@ -6,6 +6,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import ru.bublig.testtask.component.RecipeEditor;
+import ru.bublig.testtask.component.RecipeWindowEditor;
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Doctor;
 import ru.bublig.testtask.model.Patient;
@@ -17,8 +18,6 @@ import java.util.Date;
 
 @Theme("mytheme")
 public class RecipeView extends UI {
-    //TODO Все формы ввода должны валидировать данные в соответствии с их типом и допустимыми значениями
-
     private final RecipeService recipeService = new RecipeService(HSQLDBConnection.getInstance());
     private Grid<Recipe> recipeGrid = new Grid<>(Recipe.class);
 
@@ -27,7 +26,7 @@ public class RecipeView extends UI {
     private final NativeSelect<RecipeStatus> statusFilter = new NativeSelect<>();
     private final Button acceptFilter = new Button("Filter");
     private final Button addNewBtn = new Button("Add new recipe");
-    private final RecipeEditor recipeEditor = new RecipeEditor(this);
+    private final RecipeWindowEditor recipeEditor = new RecipeWindowEditor(this);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -57,10 +56,11 @@ public class RecipeView extends UI {
         addNewBtn.addClickListener(clickEvent -> {
             recipeGrid.asSingleSelect().clear();
             recipeEditor.setRecipe(new Recipe("", new Patient(), new Doctor(), new Date(), new Date(), RecipeStatus.Normal));
+            UI.getCurrent().addWindow(recipeEditor);
         });
 
         HorizontalLayout toolbar = new HorizontalLayout(filtering, addNewBtn);
-        HorizontalLayout main = new HorizontalLayout(recipeGrid, recipeEditor);
+        HorizontalLayout main = new HorizontalLayout(recipeGrid);
 
         recipeGrid.setColumns("id", "description", "patient", "doctor", "createData", "validity", "status");
 
@@ -75,19 +75,21 @@ public class RecipeView extends UI {
 
         setContent(layout);
 
-        recipeEditor.setVisible(false);
-
         recipeGrid.asSingleSelect().addValueChangeListener(valueChangeEvent -> {
-            if (valueChangeEvent.getValue() == null) {
-                recipeEditor.setVisible(false);
-            } else
+            if (!(valueChangeEvent.getValue() == null)) {
                 recipeEditor.setRecipe(valueChangeEvent.getValue());
+                UI.getCurrent().addWindow(recipeEditor);
+            }
         });
     }
 
     public void updateList() {
+        deselectAll();
         recipeGrid.setItems(recipeService.getAll());
+    }
 
+    public void deselectAll() {
+        recipeGrid.deselectAll();
     }
 
     public void updateListFilter() {

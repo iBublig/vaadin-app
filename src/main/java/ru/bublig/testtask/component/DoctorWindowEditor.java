@@ -86,10 +86,7 @@ public class DoctorWindowEditor extends Window {
             }
         });
         delete.addClickListener(e -> delete());
-        cancel.addClickListener(e -> {
-            doctorView.deselectAll();
-            close();
-        });
+        cancel.addClickListener(e -> close());
         setContent(window);
     }
 
@@ -108,7 +105,6 @@ public class DoctorWindowEditor extends Window {
             error.setVisible(true);
             return;
         }
-        doctorView.updateList();
         close();
     }
 
@@ -119,7 +115,6 @@ public class DoctorWindowEditor extends Window {
 
     private void save() {
         doctorService.save(doctor);
-        doctorView.updateList();
         close();
     }
 
@@ -129,6 +124,13 @@ public class DoctorWindowEditor extends Window {
         window.setComponentAlignment(patronymic, Alignment.BOTTOM_CENTER);
         window.setComponentAlignment(specialization, Alignment.BOTTOM_CENTER);
         window.setComponentAlignment(buttons, Alignment.BOTTOM_CENTER);
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        doctorView.updateList();
+        doctorView.deselectAll();
     }
 
     private void setValidation() {

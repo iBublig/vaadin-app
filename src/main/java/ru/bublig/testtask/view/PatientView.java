@@ -13,9 +13,6 @@ import ru.bublig.testtask.service.PatientService;
 
 @Theme("mytheme")
 public class PatientView extends UI {
-
-    //TODO Все формы ввода должны валидировать данные в соответствии с их типом и допустимыми значениями
-
     private final PatientService patientService = new PatientService(HSQLDBConnection.getInstance());
     private Grid<Patient> patientGrid = new Grid<>(Patient.class);
 

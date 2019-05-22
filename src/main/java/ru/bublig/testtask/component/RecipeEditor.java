@@ -109,6 +109,8 @@ public class RecipeEditor extends FormLayout {
 
         binder.bindInstanceFields(this);
 
+
+
         save.addClickListener(e -> save());
         delete.addClickListener(e -> delete());
         cancel.addClickListener(e -> setVisible(false));
@@ -154,14 +156,12 @@ public class RecipeEditor extends FormLayout {
         if (!recipeService.delete(recipe.getId())) {
             addComponent(new Label("Ошибка при удалении"));
         }
-        //TODO удаление с фильтром
         recipeView.updateList();
         setVisible(false);
     }
 
     private void save() {
         recipeService.save(recipe);
-        //TODO обновление с фильтром
         recipeView.updateList();
         setVisible(false);
     }
