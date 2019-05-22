@@ -5,7 +5,6 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import ru.bublig.testtask.component.RecipeEditor;
 import ru.bublig.testtask.component.RecipeWindowEditor;
 import ru.bublig.testtask.config.HSQLDBConnection;
 import ru.bublig.testtask.model.Doctor;

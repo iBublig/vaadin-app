@@ -1,6 +1,7 @@
 package ru.bublig.testtask.config;
 
 import org.hsqldb.cmdline.SqlFile;
+import org.hsqldb.cmdline.SqlToolError;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,8 +50,8 @@ public class HSQLDBConnection {
             SqlFile sqlFile = new SqlFile(new InputStreamReader(inputStream), "init", System.out, "UTF-8",
                     false, new File("."));
             sqlFile.setConnection(connection);
-//            sqlFile.execute();
-        } catch (ClassNotFoundException | SQLException | IOException e) {
+            sqlFile.execute();
+        } catch (ClassNotFoundException | SQLException | IOException | SqlToolError e) {
             e.printStackTrace();
         }
     }

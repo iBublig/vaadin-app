@@ -25,7 +25,7 @@ public class StatisticsWindow extends Window {
         setWidth("350px");
         VerticalLayout statistic = new VerticalLayout();
         statistic.setDefaultComponentAlignment(Alignment.BOTTOM_CENTER);
-        for (String string: recipeService.getStatistic()) {
+        for (String string : recipeService.getStatistic()) {
             statistic.addComponent(new Label(string));
         }
         setContent(statistic);
