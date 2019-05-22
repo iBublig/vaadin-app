@@ -98,7 +98,6 @@ public class RecipeWindowEditor extends Window {
         cancel.addClickListener(e -> close());
         patient.addValueChangeListener(e -> {
             if (e.isUserOriginated()) {
-                patientNativeSelect.setVisible(true);
                 patientNativeSelect.clear();
                 patientNativeSelect.setItems(patientService.getAll(patient.getValue()));
                 patientNativeSelect.setSizeFull();
@@ -112,7 +111,6 @@ public class RecipeWindowEditor extends Window {
         });
         doctor.addValueChangeListener(e -> {
             if (e.isUserOriginated()) {
-                doctorNativeSelect.setVisible(true);
                 doctorNativeSelect.clear();
                 doctorNativeSelect.setItems(doctorService.getAll(doctor.getValue()));
                 doctorNativeSelect.setSizeFull();
@@ -176,12 +174,7 @@ public class RecipeWindowEditor extends Window {
                         "max 30 character",
                         0, 30))
                 .bind(
-                        (ValueProvider<Recipe, String>) recipe -> {
-                            if (!recipe.getPatient().isPersisted())
-                                return "";
-                            else
-                                return recipe.getPatient().toString();
-                        },
+                        (ValueProvider<Recipe, String>) recipe -> recipe.getPatient().toString(),
                         (Setter<Recipe, String>) (recipe, s) -> patient.setValue(s));
 
         binder.forField(doctor)
@@ -189,20 +182,14 @@ public class RecipeWindowEditor extends Window {
                         "max 30 character",
                         0, 30))
                 .bind(
-                        (ValueProvider<Recipe, String>) recipe -> {
-                            if (!recipe.getDoctor().isPersisted())
-                                return "";
-                            else
-                                return recipe.getDoctor().toString();
-                        },
+                        (ValueProvider<Recipe, String>) recipe -> recipe.getDoctor().toString(),
                         (Setter<Recipe, String>) (recipe, s) -> doctor.setValue(s));
 
         binder.bindInstanceFields(this);
     }
+
     private void updateField() {
-        doctorNativeSelect.setVisible(false);
         doctorNativeSelect.clear();
-        patientNativeSelect.setVisible(false);
         patientNativeSelect.clear();
         description.clear();
         createData.clear();
@@ -215,15 +202,14 @@ public class RecipeWindowEditor extends Window {
         updateField();
         binder.setBean(recipe);
 
-        if (recipe != null) {
-            patientNativeSelect.setItems(patientService.getAll());
+        patientNativeSelect.setItems(patientService.getAll());
+        doctorNativeSelect.setItems(doctorService.getAll());
+        if (recipe.isPersisted()) {
             patientNativeSelect.setSelectedItem(recipe.getPatient());
-            doctorNativeSelect.setItems(doctorService.getAll());
             doctorNativeSelect.setSelectedItem(recipe.getDoctor());
         }
 
         recipeStatus.setSelectedItem(recipe.getStatus() == null ? RecipeStatus.Normal : recipe.getStatus());
-
         delete.setVisible(recipe.isPersisted());
         description.selectAll();
     }
@@ -239,10 +225,8 @@ public class RecipeWindowEditor extends Window {
     }
 
     private void initNativeSelect() {
-        doctorNativeSelect.setVisible(false);
         doctorNativeSelect.setVisibleItemCount(5);
         doctorNativeSelect.setEmptySelectionAllowed(false);
-        patientNativeSelect.setVisible(false);
         patientNativeSelect.setVisibleItemCount(5);
         patientNativeSelect.setEmptySelectionAllowed(false);
     }

@@ -82,6 +82,9 @@ public class Patient extends Entity implements Serializable {
 
     @Override
     public String toString() {
-        return lastName + " " + firstName + " " + patronymic;
+        if (lastName == null || firstName == null || patronymic == null)
+            return "";
+        else
+            return lastName + " " + firstName + " " + patronymic;
     }
 }
