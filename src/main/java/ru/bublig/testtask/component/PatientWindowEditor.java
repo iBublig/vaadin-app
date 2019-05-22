@@ -170,7 +170,7 @@ public class PatientWindowEditor extends Window {
                         "Min 4 and max 35 character",
                         4, 35))
                 .withValidator(new RegexpValidator(
-                        "Specialization has invalid characters",
+                        "Phone has invalid characters",
                         PHONE))
                 .bind(Patient::getPhone, Patient::setPhone);
     }

@@ -103,8 +103,8 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
     public List<Recipe> getAll(String filter) {
         String sql = "SELECT t.ID, t.DESCRIPTION, t.PATIENTID, t.DOCTORID, t.CREATEDATE, t.VALIDITY, t.STATUS " +
                 "FROM PUBLIC.RECIPE t " +
-                "WHERE t.DESCRIPTION " +
-                "LIKE '%" + filter + "%'";
+                "WHERE LOWER(t.DESCRIPTION) " +
+                "LIKE '%" + filter.trim().toLowerCase() + "%'";
         return getAllHelper(sql);
     }
 
@@ -132,12 +132,15 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
     }
 
     public List<Recipe> getAll(String textFilterValue, String patientFilterValue, String statusFilterValue) {
-        String sql = "SELECT t.ID, t.DESCRIPTION, t.PATIENTID, t.DOCTORID, t.CREATEDATE, t.VALIDITY, t.STATUS, " +
-                "p.FIRSTNAME, p.LASTNAME, p.PATRONYMIC " +
+        String sql = "SELECT t.ID, t.DESCRIPTION, t.PATIENTID, t.DOCTORID, t.CREATEDATE, t.VALIDITY, t.STATUS " +
                 "FROM PUBLIC.RECIPE t, PUBLIC.PATIENT p " +
                 "WHERE t.PATIENTID = p.ID " +
-                "AND CONCAT(t.DESCRIPTION, CONCAT(CONCAT(p.LASTNAME, CONCAT(p.FIRSTNAME, p.PATRONYMIC)), t.STATUS)) " +
-                "LIKE '%" + textFilterValue + "%" + patientFilterValue + "%" + statusFilterValue + "%'";
+                "AND LOWER(t.DESCRIPTION) " +
+                "LIKE '%" + textFilterValue.trim().toLowerCase() + "%' " +
+                "AND LOWER(CONCAT(p.LASTNAME, CONCAT(p.FIRSTNAME, p.PATRONYMIC))) " +
+                "LIKE '%" + patientFilterValue.trim().toLowerCase() + "%' " +
+                "AND LOWER(t.STATUS) " +
+                "LIKE '%" + statusFilterValue.trim().toLowerCase() + "%'";
         return getAllHelper(sql);
     }
 

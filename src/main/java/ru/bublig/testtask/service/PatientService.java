@@ -97,8 +97,8 @@ public class PatientService extends CrudDAO<Patient, Long> {
     public List<Patient> getAll(String filter) {
         String sql = "SELECT t.ID, t.FIRSTNAME, t.LASTNAME, t.PATRONYMIC, t.PHONE " +
                 "FROM PUBLIC.PATIENT t " +
-                "WHERE concat(t.FIRSTNAME, concat(t.LASTNAME, t.PATRONYMIC)) " +
-                "LIKE '%" + filter + "%'";
+                "WHERE concat(lower(t.FIRSTNAME), concat(lower(t.LASTNAME), lower(t.PATRONYMIC))) " +
+                "LIKE '%" + filter.trim().toLowerCase() + "%'";
         return getAllHelper(sql);
     }
 
