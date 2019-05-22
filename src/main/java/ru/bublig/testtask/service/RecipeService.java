@@ -141,6 +141,27 @@ public class RecipeService extends CrudDAO<Recipe, Long> {
         return getAllHelper(sql);
     }
 
+    public List<String> getStatistic(){
+        String sql = "SELECT d.FIRSTNAME, d.PATRONYMIC, COUNT(t.DOCTORID) " +
+                "FROM PUBLIC.RECIPE t, PUBLIC.DOCTOR d " +
+                "WHERE t.DOCTORID = d.ID " +
+                "GROUP BY d.FIRSTNAME, d.PATRONYMIC";
+        List<String> result = new ArrayList<>();
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                result.add(
+                        resultSet.getString(1).trim() + " " +
+                        resultSet.getString(2).trim() + ": " +
+                        resultSet.getString(3).trim()
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     private void setPreparedStatement(Recipe entity, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setString(1, entity.getDescription());
         preparedStatement.setLong(2, entity.getPatient().getId());

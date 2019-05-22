@@ -29,16 +29,9 @@ public class TestApp {
         RecipeService recipeService = new RecipeService(HSQLDBConnection.getInstance());
         DoctorService doctorService = new DoctorService(HSQLDBConnection.getInstance());
 
-        Recipe recipe = recipeService.getEntityById(1L);
-
-        List<Recipe> all = recipeService.getAll();
-        for (Recipe doctor : all) {
-            System.out.println(doctor);
+        List<String> statistic = recipeService.getStatistic();
+        for (String string: statistic) {
+            System.out.println(string);
         }
-
-
-        Date date = new Date();
-        System.out.println(date);
-
     }
 }

@@ -3,6 +3,7 @@ package ru.bublig.testtask.component;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.data.converter.LocalDateToDateConverter;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
@@ -80,7 +81,11 @@ public class RecipeEditor extends FormLayout {
                 .withConverter(new LocalDateToDateConverter(ZoneId.systemDefault()))
                 .bind(Recipe::getValidity, Recipe::setValidity);
 
-        binder.bind(patient,
+        binder.forField(patient)
+                .withValidator(new StringLengthValidator(
+                "Min 3 and max 30 character",
+                3, 30))
+                .bind(
                 (ValueProvider<Recipe, String>) recipe -> {
                     if (!recipe.getPatient().isPersisted())
                         return "";
@@ -89,7 +94,11 @@ public class RecipeEditor extends FormLayout {
                 },
                 (Setter<Recipe, String>) (recipe, s) -> patient.setValue(s));
 
-        binder.bind(doctor,
+        binder.forField(doctor)
+                .withValidator(new StringLengthValidator(
+                        "Min 3 and max 30 character",
+                        3, 30))
+                .bind(
                 (ValueProvider<Recipe, String>) recipe -> {
                     if (!recipe.getDoctor().isPersisted())
                         return "";
